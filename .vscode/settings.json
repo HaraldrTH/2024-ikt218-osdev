@@ -1,6 +1,6 @@
 {
-    "cmake.buildDirectory": "${workspaceFolder}/build/34_amigos",
-    "cmake.sourceDirectory": "${workspaceFolder}/src/34_amigos",
+    "cmake.buildDirectory": "${workspaceFolder}/build/34_amigOS",
+    "cmake.sourceDirectory": "${workspaceFolder}/src/34_amigOS",
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "cstddef": "cpp",
@@ -15,6 +15,7 @@
         "interrupts.h": "c",
         "memory.h": "c",
         "limits.h": "c"
-    }
+    },
+    "cmake.configureOnOpen": false
 
 }
