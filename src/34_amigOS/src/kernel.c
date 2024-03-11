@@ -2,6 +2,7 @@
 #include "libc/stddef.h"
 #include "libc/stdbool.h"
 #include <multiboot2.h>
+#include "lib/include/stdlib.h"
 
 
 
@@ -18,5 +19,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
 
     // Call cpp kernel_main (defined in kernel.cpp)
-    return kernel_main();
+    int color = 0x07;
+    printf(color, "Hello world!");
+    return 0;
 }
