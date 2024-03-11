@@ -16,10 +16,9 @@ int kernel_main();
 
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
-
-
-    // Call cpp kernel_main (defined in kernel.cpp)
+    
     int color = 0x07;
-    printf(color, "Hello world!");
+    clear_screen(color);
+    print_string("Hello world!", color);
     return 0;
 }
