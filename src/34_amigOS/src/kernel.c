@@ -17,7 +17,11 @@ int kernel_main();
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
-    int color = 0x07;
-    printf(color, "Hello world!");
+    //clear_screen();
+
+    printf("Hello\nWorld!");
+
+    while(true){}
+
     return 0;
 }
