@@ -1,1 +1,3 @@
-void printf(int color, char* string);
+//void clear_screen();
+void putchar(char c);
+void printf(char* str);

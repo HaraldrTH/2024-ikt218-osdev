@@ -3,7 +3,7 @@
 #include "libc/stdbool.h"
 #include <multiboot2.h>
 #include "lib/include/stdlib.h"
-
+#include "lib/include/GDT.h"
 
 
 struct multiboot_info {
@@ -16,10 +16,12 @@ int kernel_main();
 
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
+    init_gdt();
+    //clear_screen();
 
+    printf("Hello\nWorld!");
 
-    // Call cpp kernel_main (defined in kernel.cpp)
-    int color = 0x07;
-    printf(color, "Hello world!");
+    while(true){}
+
     return 0;
 }
