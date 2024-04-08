@@ -21,3 +21,4 @@ void encodeGdtEntry(uint8_t *target, struct GDT source){
     target[6] |= (source.flags << 4);
 }
 
+

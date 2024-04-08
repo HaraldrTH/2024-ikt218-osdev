@@ -1,0 +1,3 @@
+typedef IDT{
+    pass;
+} IDT;
