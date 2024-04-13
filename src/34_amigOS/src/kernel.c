@@ -4,6 +4,7 @@
 #include <multiboot2.h>
 #include "lib/include/stdlib.h"
 #include "lib/include/GDT.h"
+#include "lib/include/IDT.h"
 
 
 struct multiboot_info {
@@ -17,6 +18,7 @@ int kernel_main();
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
+    init_idt();
     //clear_screen();
 
     printf("Hello\nWorld!");
