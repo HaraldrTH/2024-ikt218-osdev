@@ -24,7 +24,9 @@ void init_idt()
    //memset(&idt_entries, 0, sizeof(idt_entry_t)*256); //Hvordan implementere denne
 
    idt_set_gate( 0, (uint32_t)isr0 , 0x08, 0x8E);
-   idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
+   idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);
+   idt_set_gate(2, (uint32_t)isr2, 0x08, 0x8E);
+   idt_set_gate(33, (uint32_t)irq1, 0x08, 0x8E);
 
    idt_flush((uint32_t)&idt_ptr);
 }

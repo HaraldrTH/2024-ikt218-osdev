@@ -2,28 +2,36 @@
 #include "libc/stddef.h"
 #include "../include/ports.h"
 
+// Array to store IRQ handlers
+//void (*irq_handlers[IRQ_COUNT])(void);
+isr_t interrupt_handlers[256];
 
 void init_irq() {
   for (int i = 0; i < IRQ_COUNT; i++) {
-    irq_handlers[i] = NULL;
+    interrupt_handlers[i] = NULL;
   }
 }
-void register_irq_handler(int irq, void (*handler)(void)) {
-  irq_handlers[irq] = handler;
+void register_interrupt_handler(uint8_t n, isr_t handler)
+{
+  interrupt_handlers[n] = handler;
 }
 
 // The main IRQ handler
-void irq_handler(int irq) {
-  // Check if a handler is registered for this IRQ
-  if (irq_handlers[irq] != NULL) {
-    irq_handlers[irq]();
-  }
+void irq_handler(registers_t regs)
+{
+   // Send an EOI (end of interrupt) signal to the PICs.
+   // If this interrupt involved the slave.
+   if (regs.int_no >= 40)
+   {
+       // Send reset signal to slave.
+       outb(0xA0, 0x20);
+   }
+   // Send reset signal to master. (As well as slave, if necessary).
+   outb(0x20, 0x20);
 
-  // Send an EOI (End of Interrupt) signal to the PIC (Programmable Interrupt Controller)
-  if (irq >= 8) {
-    // Send EOI to the slave PIC
-    outb(0xA0, 0x20);
-  }
-  // Send EOI to the master PIC
-  outb(0x20, 0x20);
+   if (interrupt_handlers[regs.int_no] != 0)
+   {
+       isr_t handler = interrupt_handlers[regs.int_no];
+       handler(regs);
+   }
 }

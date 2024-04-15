@@ -23,8 +23,9 @@ typedef struct idt_ptr_struct idt_ptr_t;
 
 // These extern directives let us access the addresses of our ASM ISR handlers.
 extern void isr0 ();
-
-extern void isr31();
+extern void isr1 ();
+extern void isr2 ();
+extern void irq1();
 
 
 void idt_set_gate(uint8_t num,uint32_t base,uint16_t sel,uint8_t flags);

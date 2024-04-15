@@ -1,4 +1,6 @@
 #pragma once
+#include "registers.h"
+#include "libc/stdint.h"
 
 #ifndef IRQ_H
 #define IRQ_H
@@ -21,16 +23,18 @@
 #define IRQ15 47
 #define IRQ_COUNT 16
 
-// Array to store IRQ handlers
-void (*irq_handlers[IRQ_COUNT])(void);
+
+typedef void (*isr_t)(registers_t);
 
 // Initialize IRQ handlers
 void init_irq();
 
 // Register an IRQ handler
-void register_irq_handler(int irq, void (*handler)(void));
+
+void register_interrupt_handler(uint8_t n, isr_t handler);
+
 // The main IRQ handler
-void irq_handler(int irq);
+void irq_handler(registers_t regs);
 
 
 #endif
