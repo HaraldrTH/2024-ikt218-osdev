@@ -19,9 +19,8 @@ int kernel_main();
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
     init_idt();
-    //clear_screen();
-
-    printf("Hello\nWorld!");
+    asm volatile ("int $0x00");
+    
 
     while(true){}
 
