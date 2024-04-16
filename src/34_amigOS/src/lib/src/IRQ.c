@@ -35,4 +35,11 @@ void irq_handler(registers_t regs)
        isr_t handler = interrupt_handlers[regs.int_no];
        handler(regs);
    }
+   else{
+    char* str = '\0';
+    int_to_string(regs.int_no, str);
+    printf("interrupt recieved: ");
+    printf(str);
+    putchar('\n');
+   }
 }
