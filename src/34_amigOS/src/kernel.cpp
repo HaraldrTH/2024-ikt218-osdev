@@ -1,9 +1,9 @@
-
 #include "lib/include/stdlib.h"
-#include "lib/include/MemoryManager.h"
+#include "lib/include/memory.h"
+#include "../include/libc/stdint.h"
 
-// Existing global operator new overloads
 /*
+// Existing global operator new overloads
 void* operator new(size_t size) {
     return malloc(size);
 }

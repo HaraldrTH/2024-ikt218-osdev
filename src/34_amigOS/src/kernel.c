@@ -7,8 +7,8 @@
 #include "lib/include/IDT.h"
 #include "lib/include/IRQ.h"
 #include "lib/include/keyboard.h"
-#include "lib/include/MemoryManager.h"
-
+#include "lib/include/memory.h"
+#include "lib/include/pit.h"
 
 extern uint32_t end;
 
@@ -31,13 +31,13 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     asm volatile ("int $0x2");
 
     // Initialize the kernel's memory manager using the end address of the kernel.
-    init_kernel_memory(&end);
+    //init_kernel_memory(&end);
 
     // Initialize paging for memory management.
-    init_paging(); // <------ THIS IS PART OF THE ASSIGNMENT
+    //init_paging(); // <------ THIS IS PART OF THE ASSIGNMENT
 
     // Print memory information.
-    print_memory_layout(); // <------ THIS IS PART OF THE ASSIGNMENT
+    //print_memory_layout(); // <------ THIS IS PART OF THE ASSIGNMENT
     
 
     while(true){}

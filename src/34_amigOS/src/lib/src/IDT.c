@@ -16,7 +16,7 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
    // It sets the interrupt gate's privilege level to 3.
    idt_entries[num].flags   = flags /* | 0x60 */;
 }
-void memset(void* location, int val, int len)
+void memoryset(void* location, int val, int len)
 {
    while(len > 0){
       location = val;
@@ -29,7 +29,7 @@ void init_idt()
    idt_ptr.limit = sizeof(idt_entry_t) * 256 -1;
    idt_ptr.base  = (uint32_t)&idt_entries;
 
-   memset(&idt_entries, 0, sizeof(idt_entry_t)*256);
+   memoryset(&idt_entries, 0, sizeof(idt_entry_t)*256);
 
    idt_set_gate(0, (uint32_t)isr0 , 0x08, 0x8E);
    idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);

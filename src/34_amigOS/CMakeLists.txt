@@ -71,6 +71,9 @@ add_executable(uiaos-kernel
 	src/lib/src/IRQ.c
 	src/lib/src/keyboard.c
 	src/lib/src/ports.c
+	src/lib/src/malloc.c
+	src/lib/src/memory.c
+	src/lib/src/memutils.c
 )
 
 # Include directories for the kernel target
