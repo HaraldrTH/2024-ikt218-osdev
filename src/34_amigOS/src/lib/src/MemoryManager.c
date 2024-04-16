@@ -12,7 +12,7 @@ static uint8_t memory_stack_LL[MEMORY_STACK_SIZE];
 static block_mem_t* memory_stack_start;
 
 // Function to initialize the memory stack
-void init_memory_stack(block_mem_t* end_addr){
+void init_kernel_memory(uint32_t* end_adr){
     char* addr = (char*)end_addr;
 
     // Calculate the remainder of the division of the addres by the size of the memory block, in case of missallignment
@@ -29,6 +29,7 @@ void init_memory_stack(block_mem_t* end_addr){
     memory_stack_start->prev = NULL_POINTER;
 }
 
+// Function to find the smallest appropriate memory block to allocate memory
 void *find_best_mem_block(block_mem_t *dynamic_mem, size_t size){
     // Initialize the result pointer with NULL and an invalid block size
     block_mem_t *best_block = (block_mem_t *) NULL_POINTER;
@@ -51,6 +52,7 @@ void *find_best_mem_block(block_mem_t *dynamic_mem, size_t size){
     return best_block;
 }
 
+// Function to allocate memory by adding a memory block to the memory stack
 void malloc(uint32_t size){
     block_mem_t *best_block = (block_mem_t*)find_best_mem_block(memory_stack_start, size);
 
@@ -78,6 +80,7 @@ void malloc(uint32_t size){
     return NULL_POINTER;
 }
 
+// Function to merge a memory block with the next one if it's unused
 void *merge_with_next_block(block_mem_t *current_mem_block){
     block_mem_t *next_mem_block = current_mem_block->next;
     // Check if the next block is unused
@@ -95,6 +98,7 @@ void *merge_with_next_block(block_mem_t *current_mem_block){
     return current_mem_block;
 }
 
+// Function to merge a memory block with the previous one if it's unused
 void *merge_with_previous_block(block_mem_t *current_mem_block){
     block_mem_t *prev_mem_block = current_mem_block->prev;
     // Check if the previous block is unused
@@ -111,6 +115,7 @@ void *merge_with_previous_block(block_mem_t *current_mem_block){
     }
 }
 
+// Function to free up memory by removeing a memory block from the memory stack
 void free(uint32_t* ptr){
     if (ptr == NULL_POINTER){
         return;
@@ -130,11 +135,6 @@ void free(uint32_t* ptr){
     // Merge with unused blocks
     current_mem_block = merge_with_next_block(current_mem_block);
     merge_with_previous_block(current_mem_block);
-}
-
-
-void init_kernel_memory(uint32_t* end){
-    continue;
 }
 
 void init_paging(){

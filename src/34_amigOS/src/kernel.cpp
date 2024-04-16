@@ -1,5 +1,6 @@
 
 #include "lib/include/stdlib.h"
+#include "lib/include/MemoryManager.h"
 
 // Existing global operator new overloads
 void* operator new(size_t size) {
