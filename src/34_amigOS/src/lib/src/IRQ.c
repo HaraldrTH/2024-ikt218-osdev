@@ -35,6 +35,9 @@ void irq_handler(registers_t regs)
        isr_t handler = interrupt_handlers[regs.int_no];
        handler(regs);
    }
+   else if(regs.int_no == 32){
+    
+   }
    else{
     char* str = '\0';
     int_to_string(regs.int_no, str);
