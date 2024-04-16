@@ -5,16 +5,17 @@
 
 // Define the NULL pointer, the memory stack size and the memory block size
 #define NULL_POINTER ((void*)0)
-#define MEMORY_STACK_SIZE 4*1024
+#define MEMORY_STACK_SIZE 4*1024 // 4KB
 #define MEMORY_BLOCK_SIZE sizeof(block_mem_t)
 
+// Define the memory block structure
 static uint8_t memory_stack_LL[MEMORY_STACK_SIZE];
 static block_mem_t* memory_stack_start;
 
 // Function to initialize the memory stack
 void init_kernel_memory(uint32_t* end_adr){
     char* addr = (char*)end_addr;
-
+    
     // Calculate the remainder of the division of the addres by the size of the memory block, in case of missallignment
     size_t remainder = (size_t)addr % sizeof(block_mem_t);
 
@@ -30,13 +31,13 @@ void init_kernel_memory(uint32_t* end_adr){
 }
 
 // Function to find the smallest appropriate memory block to allocate memory
-void *find_best_mem_block(block_mem_t *dynamic_mem, size_t size){
+void* find_best_mem_block(block_mem_t* dynamic_mem, size_t size){
     // Initialize the result pointer with NULL and an invalid block size
-    block_mem_t *best_block = (block_mem_t *) NULL_POINTER;
+    block_mem_t* best_block = (block_mem_t*) NULL_POINTER;
     uint_t best_block_size = MEMORY_STACK_SIZE + 1;
 
     // Start looking for the best (smallest unused) block at the beginning of the memory stack
-    block_mem_t *current_block = dynamic_mem;
+    block_mem_t* current_block = dynamic_mem;
     while (current_block){
         // Check if block can be used and is smaller than the current best block
         if ((!current_block->used) &&
@@ -53,8 +54,8 @@ void *find_best_mem_block(block_mem_t *dynamic_mem, size_t size){
 }
 
 // Function to allocate memory by adding a memory block to the memory stack
-void malloc(uint32_t size){
-    block_mem_t *best_block = (block_mem_t*)find_best_mem_block(memory_stack_start, size);
+void* malloc(uint32_t size){
+    block_mem_t* best_block = (block_mem_t*)find_best_mem_block(memory_stack_start, size);
 
     // Check if "find_best_mem_block" actually found a block
     if (best_block != NULL_POINTER){
@@ -81,8 +82,8 @@ void malloc(uint32_t size){
 }
 
 // Function to merge a memory block with the next one if it's unused
-void *merge_with_next_block(block_mem_t *current_mem_block){
-    block_mem_t *next_mem_block = current_mem_block->next;
+void* merge_with_next_block(block_mem_t* current_mem_block){
+    block_mem_t* next_mem_block = current_mem_block->next;
     // Check if the next block is unused
     if (next_mem_block != NULL_POINTER && !next_mem_block->used){
         // add the size of the next block to the current one
@@ -99,8 +100,8 @@ void *merge_with_next_block(block_mem_t *current_mem_block){
 }
 
 // Function to merge a memory block with the previous one if it's unused
-void *merge_with_previous_block(block_mem_t *current_mem_block){
-    block_mem_t *prev_mem_block = current_mem_block->prev;
+void merge_with_previous_block(block_mem_t* current_mem_block){
+    block_mem_t* prev_mem_block = current_mem_block->prev;
     // Check if the previous block is unused
     if (prev_mem_block != NULL_POINTER && !prev_mem_block->used){
         // add the size of the previous block to the current one
@@ -115,7 +116,7 @@ void *merge_with_previous_block(block_mem_t *current_mem_block){
     }
 }
 
-// Function to free up memory by removeing a memory block from the memory stack
+// Function to free up memory by removing a memory block from the memory stack
 void free(uint32_t* ptr){
     if (ptr == NULL_POINTER){
         return;
@@ -128,11 +129,10 @@ void free(uint32_t* ptr){
         // Maybe print error message
         return;
     }
-
     // Mark the block as unused
     current_mem_block->used = false;
 
-    // Merge with unused blocks
+    // Merge with surrounding unused blocks
     current_mem_block = merge_with_next_block(current_mem_block);
     merge_with_previous_block(current_mem_block);
 }

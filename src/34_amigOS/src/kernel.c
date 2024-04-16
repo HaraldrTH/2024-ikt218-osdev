@@ -30,7 +30,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     asm volatile ("int $0x2");
 
     // Initialize the kernel's memory manager using the end address of the kernel.
-    init_kernel_memory(&end); // <------ THIS IS PART OF THE ASSIGNMENT
+    init_kernel_memory(&end);
 
     // Initialize paging for memory management.
     init_paging(); // <------ THIS IS PART OF THE ASSIGNMENT
