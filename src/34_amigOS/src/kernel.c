@@ -7,7 +7,10 @@
 #include "lib/include/IDT.h"
 #include "lib/include/IRQ.h"
 #include "lib/include/keyboard.h"
+#include "lib/include/MemoryManager.h"
 
+
+extern uint32_t end;
 
 struct multiboot_info {
     uint32_t size;
@@ -27,7 +30,15 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     asm volatile ("int $0x1");
     asm volatile ("int $0x2");
 
+    // Initialize the kernel's memory manager using the end address of the kernel.
+    init_kernel_memory(&end);
 
+    // Initialize paging for memory management.
+    init_paging(); // <------ THIS IS PART OF THE ASSIGNMENT
+
+    // Print memory information.
+    print_memory_layout(); // <------ THIS IS PART OF THE ASSIGNMENT
+    
 
     while(true){}
 
