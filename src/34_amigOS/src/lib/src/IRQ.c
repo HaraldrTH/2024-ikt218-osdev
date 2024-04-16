@@ -1,6 +1,7 @@
 #include "../include/IRQ.h"
 #include "libc/stddef.h"
 #include "../include/ports.h"
+#include "../include/stdlib.h"
 
 // Array to store IRQ handlers
 //void (*irq_handlers[IRQ_COUNT])(void);

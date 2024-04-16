@@ -2,6 +2,7 @@
 #include "lib/include/stdlib.h"
 
 // Existing global operator new overloads
+/*
 void* operator new(size_t size) {
     return malloc(size);
 }
@@ -29,7 +30,7 @@ void operator delete[](void* ptr, size_t size) noexcept {
     (void)size; // Size parameter is unused, added to match required signature
     free(ptr);
 }
-
+*/
 extern "C" int kernel_main(void);
 int kernel_main(){
     // Allocate some memory using the kernel memory manager

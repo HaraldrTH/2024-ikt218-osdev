@@ -21,11 +21,13 @@ int kernel_main();
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
     init_idt();
+    init_irq();
     register_interrupt_handler(33, keyboard_handler);
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
     asm volatile ("int $0x2");
-    
+
+
 
     while(true){}
 

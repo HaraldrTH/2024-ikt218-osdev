@@ -8,9 +8,12 @@
 #include "../include/isr.h"
 
 
+
 // This gets called from our ASM interrupt handler stub.
 void isr_handler(registers_t regs)
 {
+   int num = regs.int_no+48;
    printf("recieved interrupt: ");
+   putchar(num);
    putchar('\n');
 }
