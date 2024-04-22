@@ -1,6 +1,7 @@
 #include "../include/IDT.h"
 #include <libc/string.h>
 #include "../include/ports.h"
+#include "../include/mem.h"
 
 idt_entry_t idt_entries[256];
 idt_ptr_t   idt_ptr;
@@ -16,14 +17,7 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
    // It sets the interrupt gate's privilege level to 3.
    idt_entries[num].flags   = flags /* | 0x60 */;
 }
-void memset(void* location, int val, int len)
-{
-   while(len > 0){
-      location = val;
-      len--;
-      location++;
-   }
-}
+
 void init_idt()
 {
    idt_ptr.limit = sizeof(idt_entry_t) * 256 -1;

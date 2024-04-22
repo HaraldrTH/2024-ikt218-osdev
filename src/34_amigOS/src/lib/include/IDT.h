@@ -12,7 +12,7 @@ struct idt_entry_struct
 } __attribute__((packed));
 typedef struct idt_entry_struct idt_entry_t;
 
-void memset(void* location, int val, int len);
+
 // A struct describing a pointer to an array of interrupt handlers.
 // This is in a format suitable for giving to 'lidt'.
 struct idt_ptr_struct

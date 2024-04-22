@@ -12,6 +12,5 @@ void keyboard_handler(){
     while (1)
     {
         int_to_string(inb(0x60), scancode);
-        printf(character);
     }
 }
