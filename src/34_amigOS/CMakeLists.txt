@@ -72,6 +72,7 @@ add_executable(uiaos-kernel
 	src/lib/src/keyboard.c
 	src/lib/src/ports.c
 	src/lib/src/mem.c
+	src/lib/src/dict.c
 )
 
 # Include directories for the kernel target

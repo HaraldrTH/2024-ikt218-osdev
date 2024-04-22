@@ -1,4 +1,5 @@
 #include "../include/dict.h"
+#include "../include/mem.h"
 
 
 
@@ -21,7 +22,7 @@ uint32_t hash(const char* key) {
 
 // Create a new key-value pair
 KeyValuePair* create_pair(const char* key, const char* value) {
-    KeyValuePair* pair = (KeyValuePair*)malloc(sizeof(KeyValuePair));
+    KeyValuePair* pair = (KeyValuePair*)custom_malloc(sizeof(KeyValuePair));
     if (!pair) {
         return NULL;
     }
