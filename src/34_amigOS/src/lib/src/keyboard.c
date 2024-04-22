@@ -4,10 +4,6 @@
 
 
 
-void init_scancode_table(Dictionary* dict){
-    create_pair("1f", "a");
-    insert(scancode_table, "1f", "a");
-}
 
 void keyboard_handler(){
     printf("Keyboard");
@@ -16,7 +12,6 @@ void keyboard_handler(){
     while (1)
     {
         int_to_string(inb(0x60), scancode);
-        character = get(scancode_table, scancode);
         printf(character);
     }
 }
