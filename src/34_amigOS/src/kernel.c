@@ -7,6 +7,7 @@
 #include "lib/include/IDT.h"
 #include "lib/include/IRQ.h"
 #include "lib/include/keyboard.h"
+#include "lib/include/mem.h"
 
 
 
@@ -23,6 +24,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
     init_idt();
     init_irq();
+    memory_init();
     register_interrupt_handler(33, keyboard_handler);
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
