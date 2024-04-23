@@ -76,6 +76,7 @@ add_executable(uiaos-kernel
 	src/lib/src/memutils.c
 	src/lib/src/mem.c
 	src/lib/src/dict.c
+	src/lib/src/pit.c
 )
 
 # Include directories for the kernel target
