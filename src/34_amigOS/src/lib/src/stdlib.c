@@ -9,7 +9,24 @@ static int cursor_y = 0;
 
 uint16_t* video = (uint16_t*)0xB8000;
 
-void printf(char* str)
+void scroll_up(){
+    // Move each row of text one row upwards
+    for (int y = 1; y < VGA_HEIGHT; ++y){
+        for (int x = 0; x< VGA_WIDTH; ++x){
+            const int index = y * VGA_WIDTH + x;
+            const int prev_index = (y - 1) * VGA_WIDTH + x;
+            video[prev_index] = video[index];
+        }
+    }
+    // Clear the last row
+    const int last_row = (VGA_HEIGHT - 1) * VGA_WIDTH;
+    for (int x = 0; x < VGA_WIDTH; ++x){
+        video[last_row + x] = ' '|0x0F00;
+    }
+    cursor_y--;
+}
+
+void printf(char* str, ...)
 {
     while(*str != '\0')
     {
@@ -19,24 +36,27 @@ void printf(char* str)
 }
 
 void putchar(char c){
-
-        if(c == '\n')
-        {
+        if(c == '\n'){
             cursor_x = 0;
-            cursor_y++;
+            if (++cursor_y >= VGA_HEIGHT){
+                scroll_up(); //Scroll up if the cursor reaches the bottom
+            }
         }
-        else
-        {
-            video[VGA_WIDTH*cursor_y+cursor_x] = (video[VGA_WIDTH*cursor_y+cursor_x] & 0xFF00) | c;
+        else{
+            video[VGA_WIDTH*cursor_y + cursor_x] = (video[VGA_WIDTH*cursor_y+cursor_x] & 0xFF00) | c;
             cursor_x++;
         }
-
-        if (cursor_x >= 80)
-        {
+        if (cursor_x >= 80){
             cursor_x = 0;
-            cursor_y++;
+            if (++cursor_y >= VGA_HEIGHT){
+                scroll_up();
+            }
+            else{
+                cursor_y++;
+            }
         }
 }
+
 void reverse(char str[], int length) {
     int start = 0;
     int end = length - 1;

@@ -1,5 +1,6 @@
 #include "../include/memory.h"
 //#include <libc/system.h>
+#include "../include/stdlib.h"
 
 
 #define MAX_PAGE_ALIGNED_ALLOCS 32
@@ -12,6 +13,8 @@ uint32_t pheap_end = 0;
 uint8_t *pheap_desc = 0;
 uint32_t memory_used = 0;
 
+char* arg;
+
 // Initialize the kernel memory manager
 void init_kernel_memory(uint32_t* kernel_end)
 {
@@ -22,18 +25,48 @@ void init_kernel_memory(uint32_t* kernel_end)
     heap_end = pheap_begin;
     memset((char *)heap_begin, 0, heap_end - heap_begin);
     pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALIGNED_ALLOCS);
-    printf("Kernel heap starts at 0x%x\n", last_alloc);
+
+    printf("Kernel heap starts at 0x");
+    arg = int_to_string(last_alloc, 0);
+    printf(arg);
+    printf("\n");
 }
 
 // Print the current memory layout
 void print_memory_layout()
 {
-    printf("Memory used: %d bytes\n", memory_used);
-    printf("Memory free: %d bytes\n", heap_end - heap_begin - memory_used);
-    printf("Heap size: %d bytes\n", heap_end - heap_begin);
-    printf("Heap start: 0x%x\n", heap_begin);
-    printf("Heap end: 0x%x\n", heap_end);
-    printf("PHeap start: 0x%x\nPHeap end: 0x%x\n", pheap_begin, pheap_end);
+    printf("Memory used: ");
+    arg = int_to_string(memory_used, 0);
+    printf(arg);
+    printf(" bytes\n");
+
+    printf("Memory free: ");
+    arg = int_to_string(heap_end - heap_begin - memory_used, 0);
+    printf(arg);
+    printf(" bytes\n");
+
+    printf("Heap size: ");
+    arg = int_to_string(heap_end - heap_begin, 0);
+    printf(arg);
+    printf(" bytes\n");
+
+    printf("Heap start: 0x");
+    arg = int_to_string(heap_begin, 0);
+    printf(arg);
+    printf("\n");
+    
+    printf("Heap end: 0x");
+    arg = int_to_string(heap_end, 0);
+    printf(arg);
+    printf("\n");
+    
+    printf("PHeap start: 0x");
+    arg = int_to_string(pheap_begin, 0);
+    printf(arg);
+    printf("\nPHeap end: 0x");
+    arg = int_to_string(pheap_end, 0);
+    printf(arg);
+    printf("\n");
 }
 
 // Free a block of memory
@@ -66,7 +99,15 @@ char* pmalloc(size_t size)
     {
         if(pheap_desc[i]) continue;
         pheap_desc[i] = 1;
-        printf("PAllocated from 0x%x to 0x%x\n", pheap_begin + i*4096, pheap_begin + (i+1)*4096);
+
+        printf("PAllocated from 0x");
+        arg = int_to_string(pheap_begin + i*4096, 0);
+        printf(arg);
+        printf(" to 0x");
+        arg = int_to_string(pheap_begin + (i+1)*4096, 0);
+        printf(arg);
+        printf("\n");
+
         return (char *)(pheap_begin + i*4096);
     }
     printf("pmalloc: FATAL: failure!\n");
@@ -84,7 +125,16 @@ void* malloc(size_t size)
     while((uint32_t)mem < last_alloc)
     {
         alloc_t *a = (alloc_t *)mem;
-        printf("mem=0x%x a={.status=%d, .size=%d}\n", mem, a->status, a->size);
+        printf("mem=0x");
+        arg = int_to_string(mem, 0);
+        printf(arg);
+        printf(" a={.status=");
+        arg = int_to_string(a->status, 0);
+        printf(arg);
+        printf(", .size=");
+        arg = int_to_string(a->size, 0);
+        printf(arg);
+        printf("}\n");
 
         if(!a->size)
             goto nalloc;
@@ -99,7 +149,17 @@ void* malloc(size_t size)
         if(a->size >= size)
         {
             a->status = 1;
-            printf("RE:Allocated %d bytes from 0x%x to 0x%x\n", size, mem + sizeof(alloc_t), mem + sizeof(alloc_t) + size);
+            printf("RE:Allocated ");
+            arg = int_to_string(size, 0);
+            printf(arg);
+            printf(" bytes from 0x");
+            arg = int_to_string(mem + sizeof(alloc_t), 0);
+            printf(arg);
+            printf(" to 0x");
+            arg = int_to_string(mem + sizeof(alloc_t) + size, 0);
+            printf(arg);
+            printf("\n");
+
             memset(mem + sizeof(alloc_t), 0, size);
             memory_used += size + sizeof(alloc_t);
             return (char *)(mem + sizeof(alloc_t));
@@ -123,7 +183,18 @@ void* malloc(size_t size)
     last_alloc += size;
     last_alloc += sizeof(alloc_t);
     last_alloc += 4;
-    printf("Allocated %d bytes from 0x%x to 0x%x\n", size, (uint32_t)alloc + sizeof(alloc_t), last_alloc);
+
+    printf("Allocated ");
+    arg = int_to_string(size, 0);
+    printf(arg);
+    printf(" bytes from 0x");
+    arg = int_to_string((uint32_t)alloc + sizeof(alloc_t), 0);
+    printf(arg);
+    printf(" to 0x");
+    arg = int_to_string(last_alloc, 0);
+    printf(arg);
+    printf("\n");
+
     memory_used += size + 4 + sizeof(alloc_t);
     memset((char *)((uint32_t)alloc + sizeof(alloc_t)), 0, size);
     return (char *)((uint32_t)alloc + sizeof(alloc_t));
