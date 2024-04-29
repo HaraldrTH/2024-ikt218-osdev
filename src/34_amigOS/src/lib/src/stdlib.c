@@ -1,5 +1,6 @@
 #include "../include/stdlib.h"
 #include "../../34_amigOS/include/libc/stdint.h"
+#include "../include/libc/stdarg.h"
 
 static const int VGA_WIDTH = 80;
 static const int VGA_HEIGHT= 25;
@@ -13,7 +14,7 @@ void scroll_up(){
     // Move each row of text one row upwards
     for (int y = 1; y < VGA_HEIGHT; ++y){
         for (int x = 0; x< VGA_WIDTH; ++x){
-            const int index = y * VGA_WIDTH + x;
+            const int index = y * VGA_WIDTH + x; // Current index
             const int prev_index = (y - 1) * VGA_WIDTH + x;
             video[prev_index] = video[index];
         }
@@ -26,20 +27,33 @@ void scroll_up(){
     cursor_y--;
 }
 
-void printf(char* str, ...)
-{
-    while(*str != '\0')
-    {
-        putchar(*str);
-        str++;
+void printf(char* str, ...){
+    va_list args;
+    va_start(args, str);
+    while (*str != '\0') {
+        if (*str == '%') {
+            ++str;
+            if (*str == 'd') {
+                int value = va_arg(args, int);
+                char* str = int_to_string(value, 0);
+                while(*str != '\0'){
+                    putchar(*str);
+                    str++;
+                }
+            }
+        } else {
+            putchar(*str);
+        }
+        ++str;
     }
+    va_end(args);
 }
 
 void putchar(char c){
         if(c == '\n'){
-            cursor_x = 0;
+            cursor_x = 0; // Move to the cursor back to the start of the line if the character is a newline
             if (++cursor_y >= VGA_HEIGHT){
-                scroll_up(); //Scroll up if the cursor reaches the bottom
+                scroll_up(); // Scroll up if the cursor reaches the bottom
             }
         }
         else{
@@ -47,12 +61,12 @@ void putchar(char c){
             cursor_x++;
         }
         if (cursor_x >= 80){
-            cursor_x = 0;
+            cursor_x = 0; // Move back to the start of the line if the cursor reaches the end of the line
             if (++cursor_y >= VGA_HEIGHT){
-                scroll_up();
+                scroll_up(); // Scroll up if the cursor reaches the bottom
             }
             else{
-                cursor_y++;
+                cursor_y++; //  Otherwise: move cursor to the next line
             }
         }
 }
@@ -73,6 +87,13 @@ char* int_to_string(int num, char* str) {
     int i = 0;
     int n = num;
     int is_negative = 0;
+
+    // If the number is 0, handle it as a special case
+    if (n == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
 
     // Handle negative numbers
     if (n < 0) {
