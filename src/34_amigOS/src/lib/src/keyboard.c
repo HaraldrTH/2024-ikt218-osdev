@@ -4,12 +4,8 @@
 
 Dictionary* scancodes;
 init_scancodes(){
-    insert(scancodes, "30", "A");
+    insert(scancodes, "30", "a");
 }
 void keyboard_handler(){
-    char* scancode = '\0';
-    char* character = '\0';
-    int input = inb(0x60);
-    int_to_string(input, scancode);
-    character = get(scancodes, scancode);
+    printf("Keyboard");
 }

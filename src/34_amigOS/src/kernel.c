@@ -27,7 +27,6 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_idt();
     init_irq();
     memory_init();
-    init_scancodes();
     register_interrupt_handler(33, keyboard_handler);
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
