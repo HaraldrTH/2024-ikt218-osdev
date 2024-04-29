@@ -10,6 +10,8 @@
 #include "lib/include/memory.h"
 #include "lib/include/pit.h"
 #include "lib/include/mem.h"
+#include "lib/include/keyboard.h"
+#
 
 
 extern uint32_t end;
@@ -26,8 +28,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
     init_idt();
     init_irq();
+    init_keyboard();
     memory_init();
-    register_interrupt_handler(33, keyboard_handler);
     asm volatile ("int $0x0");
     asm volatile ("int $0x1");
     asm volatile ("int $0x2");
