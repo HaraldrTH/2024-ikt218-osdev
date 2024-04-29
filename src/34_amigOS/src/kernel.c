@@ -41,5 +41,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     // Print memory information.
     print_memory_layout(); // <------ THIS IS PART OF THE ASSIGNMENT
 
+    init_pit();
+
     return kernel_main();
 }
