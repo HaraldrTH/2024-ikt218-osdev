@@ -9,14 +9,8 @@ uint32_t tick = 0;
 static void timer_callback(){
     tick++;
     if (tick % 1000 == 0){
-        printf("Tick: ");
-        printf(int_to_string(tick, 0));
-        printf("\n");
+        printf("Tick: %d\n", tick);
     }
-};
-
-uint32_t get_current_tick(){
-    return tick;
 };
 
 void init_pit(){
@@ -25,7 +19,7 @@ void init_pit(){
 
     uint32_t divisor = DIVIDER;
 
-    // Send the command byte.
+    // Send the command byte, set the PIT to repeating mode
     outb(0x43,0x36);
 
     // Divisor has to be sent byte-wise, so split here into upper/lower bytes.
@@ -34,6 +28,10 @@ void init_pit(){
 
     outb(0x40, l);
     outb(0x40, h);
+};
+
+uint32_t get_current_tick(){
+    return tick;
 };
 
 void sleep_interrupt(uint32_t milliseconds){
