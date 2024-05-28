@@ -15,20 +15,3 @@ build.ninja
 
 00_per_arne
 src/group_name/src/kernel.c
-build/34_amigOS/cmake_install.cmake
-.devcontainer/devcontainer.json
-src/34_amigOS/CMakeLists.txt
-build/34_amigOS/compile_commands.json
-build/34_amigOS/disk.iso
-build/34_amigOS/kernel.bin
-build/34_amigOS/kernel.iso
-src/34_amigOS/CMakeLists.txt
-<<<<<<< HEAD
-.vscode/settings.json
-=======
->>>>>>> a84312ba5ffc5eddc6e112e6f50712d7888837f0
-build/34_amigOS/compile_commands.json
-build/34_amigOS/disk.iso
-build/34_amigOS/kernel.bin
-build/34_amigOS/kernel.iso
-
